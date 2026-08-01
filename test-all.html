@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarmoPrawoJazdy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="icons/favicon.svg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <section id="menu"><a href="index.html"><img src="icons/menu.svg" alt="menu icon" ></a></section>
+        <section id="name"><h1>DarmoPrawoJazdy</h1></section>
+        <section id="tips"><a href="info.html#support"><img src="icons/handshake.svg" alt="tip icon"></a></section>
+    </header>
+    <main id="test">
+        <section id="quiz">
+            <section id="quiz-header"></section>
+            <section id="quiz-question"></section>
+            <section id="quiz-media"></section>
+            <section id="quiz-actions"></section>
+        </section>
+    </main>
+    <footer>Created by fpziolkowski</footer>
+    <section id="popup">
+        <section id="jump-box">
+            <h3>Przejdź do pytania:</h3>
+            <section class="jump-controls">
+                <input type="number" id="jump-input" min="1" placeholder="Nr">
+                <button onclick="jumpToQuestion()">Przejdź</button>
+            </section>
+        </section>
+    </section>
+    <script src="questions_db.js"></script>
+    <script src="functions.js"></script>
+    <script>
+        localStorage.setItem("ExamMode",0)
+        if (!localStorage.getItem("category")){
+            window.location.replace("index.html");
+        }
+        const savedCat=localStorage.getItem("category")
+        const examQuestions = allQuestions.filter(q => q.Kategorie && q.Kategorie.includes(savedCat))
+        const questionsAmount = examQuestions.length;
+        generateQuestion(examQuestions)
+
+
+
+       
+    </script>
+</body>
+</html>

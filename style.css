@@ -1,0 +1,723 @@
+/* ==========================================================================
+   1. ZMIENNE SYSTEMOWE I PALETA BARW
+   ========================================================================== */
+:root {
+  --bg-main: rgb(15, 23, 42);
+  --bg-card: #1e293b;
+  --bg-card-alt: #1a2234;
+  --bg-input: #0f172a;
+  --bg-detail: #111827;
+  
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-border: #3b82f6;
+  
+  --border-color: #334155;
+  --border-alt: #2a3650;
+  
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+  
+  --transition: all 0.2s ease;
+}
+
+/* ==========================================================================
+   2. RESET I PODSTAWY (MOBILE FIRST)
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-main);
+}
+
+body {
+  background-color: var(--bg-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   3. WSPÓLNE ELEMENTY INTERFEJSU (Karty, Przyciski, Ikony)
+   ========================================================================== */
+
+/* Wspólne tło dla kafelków, kart i okien modalnych */
+.selection,
+#quiz,
+#category-box,
+section#jump-box,
+#result-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Domyślny styl dla interaktywnych przycisków akcji */
+#quiz-actions button,
+.jump-controls button,
+#category-box button:hover,
+#result-actions button {
+  background-color: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+#quiz-actions button:hover,
+.jump-controls button:hover,
+#result-actions button:hover {
+  background-color: var(--primary-hover);
+}
+
+#quiz-actions button:active,
+.jump-controls button:active,
+#category-box button:active {
+  transform: scale(0.97);
+}
+
+/* Wspólne zachowanie białych ikon SVG/PNG */
+#menu img,
+#tips img,
+img.ico,
+#quiz-header button img,
+#result-header img,
+#result-actions img {
+  filter: brightness(0) invert(1);
+  display: block;
+}
+
+/* ==========================================================================
+   4. POWIĘKSZONY NAGŁÓWEK (HEADER) I STOPKA (FOOTER)
+   ========================================================================== */
+header {
+  background-color: var(--bg-card);
+  padding: 1.2rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+}
+
+#menu img,
+#tips img {
+  width: 2.6rem;
+  height: 2.6rem;
+  min-width: 2.6rem;
+  cursor: pointer;
+}
+
+#name {
+  text-align: center;
+  padding: 0 0.2rem;
+  overflow: hidden;
+}
+
+#name h1 {
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--bg-card);
+}
+
+/* ==========================================================================
+   5. STRONA GŁÓWNA (GRID & KAFELKI)
+   ========================================================================== */
+main {
+  flex: 1;
+  width: 98%;
+  max-width: 100%;
+  margin: 0.6rem auto;
+  padding: 0 0.2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+main#test {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 98%;
+  max-width: 100%;
+  margin: 0.6rem auto;
+  padding: 0;
+  z-index: 100;
+}
+
+.selection {
+  border-radius: var(--radius-lg);
+  padding: 0;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.selection:active {
+  transform: scale(0.98);
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem 1rem;
+}
+
+button.card-link {
+  background: transparent;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+img.ico {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-link h2 {
+  font-size: 1.25rem;
+}
+
+.card-link p {
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+}
+
+/* ==========================================================================
+   6. STRONA QUIZU
+   ========================================================================== */
+#quiz {
+  border-radius: var(--radius-lg);
+  padding: 0.8rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.6rem;
+}
+
+#quiz-header h2 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+#quiz-header button {
+  background-color: var(--bg-card);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#quiz-header button img {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+/* Zarezerwowana wysokość na 4 wiersze treści pytania */
+#quiz-question {
+  min-height: 5.5rem;
+  display: flex;
+  align-items: center;
+}
+
+#quiz-question p {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Powiększony blok multimediów */
+#quiz-media {
+  width: 100%;
+  height: 280px;
+  background-color: var(--bg-main);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#quiz-media img,
+#quiz-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#quiz-media img.ico {
+  width: 4rem;
+  height: 4rem;
+  opacity: 0.4;
+  margin: 0;
+}
+
+/* Akcje i przyciski quizu */
+#quiz-actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 0.35rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+#quiz-actions button {
+  padding: 0.5rem 0.15rem;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  width: 100%;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  word-break: break-word;
+  overflow: hidden;
+}
+
+#quiz-actions button img.ico {
+  width: 2.2rem;
+  height: 2.2rem;
+  margin-bottom: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   7. MODALE I POPUPY
+   ========================================================================== */
+#popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Popup Wyboru Kategorii */
+#category-box {
+  border-radius: var(--radius-xl);
+  padding: 1.2rem;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+#category-box h2 {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+#category-box button {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0;
+}
+
+#category-box button:hover {
+  border-color: var(--primary-border);
+  transform: translateY(-2px);
+}
+
+/* Popup Przeskoku do Pytania */
+section#jump-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+section#jump-box h3 {
+  font-size: 1.1rem;
+}
+
+.jump-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#jump-input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  width: 100px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#jump-input:focus {
+  border-color: var(--primary);
+}
+
+.jump-controls button {
+  padding: 0.6rem 1.2rem;
+}
+
+/* Popup Wyników */
+#result-box {
+  background-color: var(--bg-card-alt);
+  border: 1px solid var(--border-alt);
+  border-radius: var(--radius-xl);
+  padding: 1.2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+#result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-alt);
+  padding-bottom: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+#result-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+#result-header button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#result-header img {
+  width: 1.8rem;
+  height: 1.8rem;
+  filter: brightness(0) invert(1);
+}
+
+#result-score {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+#result-score h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+#result-details {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: var(--bg-detail);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--border-alt);
+}
+
+#result-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#result-actions button {
+  padding: 0.8rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: auto;
+}
+
+#result-actions img {
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  filter: brightness(0) invert(1);
+}
+
+/* ==========================================================================
+   8. MEDIA QUERIES (DESKTOP / TABLET - EKRANY > 601px)
+   ========================================================================== */
+@media (min-width: 601px) {
+  header {
+    padding: 1.5rem 2rem;
+  }
+
+  #menu img,
+  #tips img {
+    width: 3.4rem;
+    height: 3.4rem;
+    min-width: 3.4rem;
+  }
+
+  #name h1 {
+    font-size: 2.2rem;
+  }
+
+  main {
+    max-width: 1000px;
+    width: 90%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.44rem;
+    margin: 1.8rem auto;
+    padding: 0;
+  }
+
+  main#test {
+    max-width: 700px;
+    width: 90%;
+    margin: 1.8rem auto;
+    padding: 0;
+  }
+
+  .card-link {
+    padding: 2.4rem 1.8rem;
+  }
+
+  img.ico {
+    width: 5.4rem;
+    height: 5.4rem;
+    margin-bottom: 1.44rem;
+  }
+
+  .card-link h2 {
+    font-size: 1.62rem;
+  }
+
+  .card-link p {
+    font-size: 1.08rem;
+    margin-top: 0.48rem;
+  }
+
+  footer {
+    padding: 1.2rem;
+    font-size: 1.02rem;
+  }
+
+  .selection:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2);
+  }
+
+  #quiz {
+    padding: 1.5rem;
+    gap: 1.2rem;
+  }
+
+  #quiz-header h2 {
+    font-size: 1.1rem;
+  }
+
+  #quiz-header button img {
+    width: 3.6rem;
+    height: 3.6rem;
+  }
+
+  #quiz-question {
+    min-height: 6.5rem;
+  }
+
+  #quiz-question p {
+    font-size: 1.05rem;
+  }
+
+  #quiz-media {
+    height: 400px;
+  }
+
+  #quiz-actions {
+    gap: 0.6rem;
+  }
+
+  #quiz-actions button {
+    padding: 1rem 0.6rem;
+    font-size: 0.85rem;
+    min-height: 120px;
+  }
+
+  #quiz-actions button img.ico {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  #category-box {
+    max-width: 450px;
+    padding: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  #category-box button {
+    width: 5.4rem;
+    height: 5.4rem;
+  }
+
+  #result-box {
+    padding: 1.5rem;
+    max-width: 480px;
+  }
+
+  #result-header h2 {
+    font-size: 1.5rem;
+  }
+
+  #result-header img {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  #result-score h1 {
+    font-size: 6rem;
+  }
+
+  #result-actions img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+/* ==========================================================================
+   UKŁAD DLA STRONY INFO (info.html)
+   ========================================================================== */
+
+/* Mobilki (domyślnie): pionowa lista */
+main#info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+main#info .selection {
+  padding: 1.8rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+main#info #info-box p {
+  color: var(--text-muted);
+  margin-top: 0.8rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 90%;
+}
+
+/* Wersja na komputery i tablety (> 601px) */
+@media (min-width: 601px) {
+  main#info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.44rem;
+  }
+
+  /* Scalenie lewej komórki na 2 wiersze */
+  main#info #info-box {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    height: 100%;
+  }
+
+  /* Umieszczenie Support w prawej górnej komórce */
+  main#info #support {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  /* Umieszczenie GitHub w prawej dolnej komórce */
+  main#info #github {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+
+  /* Dopasowanie linków na kartach support i github */
+  main#info .card-link {
+    padding: 1.2rem;
+  }
+}

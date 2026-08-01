@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarmoPrawoJazdy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="icons/favicon.svg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <section id="menu"><a href="index.html"><img src="icons/menu.svg" alt="menu icon" ></a></section>
+        <section id="name"><h1>DarmoPrawoJazdy</h1></section>
+        <section id="tips"><a href="info.html#support"><img src="icons/handshake.svg" alt="tip icon"></a></section>
+    </header>
+    <main>
+        <section class="selection">
+            <a href="test-all.html" class="card-link">
+            <img src="icons/book.svg" alt="nauka" class="ico">
+            <h2>Nauka</h2>
+            <p>Przeglądaj wszystkie pytania według numerów</p>
+            </a>
+        </section>
+
+        <section class="selection">
+            <a href="test-exam.html" class="card-link">
+            <img src="icons/timer.svg" alt="egzamin" class="ico">
+            <h2>Egzamin</h2>
+            <p>Losowy test 32 pytań z licznikiem czasu</p>
+            </a>
+        </section>
+
+        <section class="selection">
+            <button onclick="popup()" class="card-link">
+            <img src="icons/car.svg" alt="kategorie" class="ico">
+            <h2 id="category-h2">Kategoria:</h2>
+            <p>Zmień kategorię (A, B, C, D...)</p>
+            </button>
+        </section>
+
+        <section class="selection">
+            <a href="info.html" class="card-link">
+            <img src="icons/info-circle.svg" alt="o aplikacji" class="ico">
+            <h2>O Aplikacji</h2>
+            <p>Informacje o projekcie i wsparcie</p>
+            </a>
+        </section>
+    </main>
+    <footer>Created by fpziolkowski</footer>
+    <section id="popup">
+        <section id="category-box">
+            <h2>Wybierz kategorię</h2>
+            
+            <button type="button" onclick="selectCat('A')">A</button>
+            <button type="button" onclick="selectCat('A1')">A1</button>
+            <button type="button" onclick="selectCat('A2')">A2</button>
+            <button type="button" onclick="selectCat('AM')">AM</button>
+            <button type="button" onclick="selectCat('B')">B</button>
+            <button type="button" onclick="selectCat('B1')">B1</button>
+            <button type="button" onclick="selectCat('C')">C</button>
+            <button type="button" onclick="selectCat('C1')">C1</button>
+            <button type="button" onclick="selectCat('D')">D</button>
+            <button type="button" onclick="selectCat('D1')">D1</button>
+            <button type="button" onclick="selectCat('T')">T</button>
+            
+        </section>
+    </section>
+<script>
+    if (!localStorage.getItem("category")){
+        popup()
+    }else
+    {
+        let savedCat=localStorage.getItem("category")
+        document.getElementById("category-h2").innerText="Kategoria: "+savedCat
+    }
+    function popup()
+    {
+        console.log("popup() initiated.")
+        document.getElementById("popup").style.display="flex"
+    }
+    function selectCat(Category)
+    {
+        console.log("selectCat() initiated.")
+        localStorage.setItem("category", Category);
+        console.log(Category)
+        document.getElementById("category-h2").innerText="Kategoria: "+Category
+        document.getElementById("popup").style.display = "none"
+    }
+
+</script>
+</body>
+</html>

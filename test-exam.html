@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarmoPrawoJazdy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="icons/favicon.svg" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <section id="menu"><a href="index.html"><img src="icons/menu.svg" alt="menu icon" ></a></section>
+        <section id="name"><h1>DarmoPrawoJazdy</h1></section>
+        <section id="tips"><a href="info.html#support"><img src="icons/handshake.svg" alt="tip icon"></a></section>
+    </header>
+    <main id="test">
+        <section id="quiz">
+            <section id="quiz-header"></section>
+            <section id="quiz-question"></section>
+            <section id="quiz-media"></section>
+            <section id="quiz-actions"></section>
+        </section>
+    </main>
+    <footer>Created by fpziolkowski</footer>
+    <section id="popup">
+        <section id="jump-box">
+            <h3>Przejdź do pytania:</h3>
+            <section class="jump-controls">
+                <input type="number" id="jump-input" min="1" placeholder="Nr">
+                <button onclick="jumpToQuestion()">Przejdź</button>
+            </section>
+        </section>
+    </section>
+    <script src="questions_db.js"></script>
+    <script src="functions.js"></script>
+    <script>
+        localStorage.setItem("ExamMode",1)
+        const savedCat=localStorage.getItem("category")
+        const questionsSelectedCat = allQuestions.filter(q => q.Kategorie && q.Kategorie.includes(savedCat))
+        
+        /*
+        Egzamin teoretyczny na prawo jazdy: 
+
+        W części podstawowej jest 
+        10 pytań za 3 punkty, 
+        6 pytań za 2 punkty, 
+        4 pytania za 1 punkt. 
+
+        W części specjalistycznej (na poszczególne kategorie): 
+        6 pytań za 3 punkty, 
+        4 pytania za 2 punkty, 
+        2 pytania za 1 punkt. 
+        Suma możliwych do uzyskania punktów wynosi 74.
+
+        PS some dummy in the MI used both "Specjalistyczny" and "SPECJALISTYCZNY" in database toLowerCase needed.
+        */
+        const questionsTypeBasic1 = questionsSelectedCat.filter(q => q["Zakres struktury"] && q["Zakres struktury"].toLowerCase().includes("podstawowy") && q["Liczba punktów"] === 1);
+        const questionsTypeBasic2 = questionsSelectedCat.filter(q => q["Zakres struktury"] && q["Zakres struktury"].toLowerCase().includes("podstawowy") && q["Liczba punktów"] === 2);
+        const questionsTypeBasic3 = questionsSelectedCat.filter(q => q["Zakres struktury"] && q["Zakres struktury"].toLowerCase().includes("podstawowy") && q["Liczba punktów"] === 3);
+
+        const questionsTypeSpecialized1 = questionsSelectedCat.filter(q => q["Zakres struktury"] && q["Zakres struktury"].toLowerCase().includes("specjalistyczny") && q["Liczba punktów"] === 1);
+        const questionsTypeSpecialized2 = questionsSelectedCat.filter(q => q["Zakres struktury"] && q["Zakres struktury"].toLowerCase().includes("specjalistyczny") && q["Liczba punktów"] === 2);
+        const questionsTypeSpecialized3 = questionsSelectedCat.filter(q => q["Zakres struktury"] && q["Zakres struktury"].toLowerCase().includes("specjalistyczny") && q["Liczba punktów"] === 3);
+        
+        const examQuestions = [
+            ...getAmountRandomsFromArray(questionsTypeBasic3, 10),
+            ...getAmountRandomsFromArray(questionsTypeBasic2, 6),
+            ...getAmountRandomsFromArray(questionsTypeBasic1, 4),
+            ...getAmountRandomsFromArray(questionsTypeSpecialized3, 6),
+            ...getAmountRandomsFromArray(questionsTypeSpecialized2, 4),
+            ...getAmountRandomsFromArray(questionsTypeSpecialized1, 2)]
+
+        const questionsAmount = examQuestions.length;
+        localStorage.setItem("question_number",0)
+        //console.log(examQuestions)
+        let userAnswers=Array(examQuestions.length)
+        generateQuestion(examQuestions)
+       
+        
+        
+           
+        
+
+        
+        
+</script>
+</body>
+</html>
